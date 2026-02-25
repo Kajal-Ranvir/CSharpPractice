@@ -1,14 +1,10 @@
-﻿using System;
-
-namespace CSharp
+﻿namespace CSharpPrograms
 {
-    class Program
+    class HelloWorld
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            // HelloWorld.Run();
-            // UserDetails.Run();
-            AddTwoNumbers.Run();
+            Console.WriteLine("Hello World");
         }
     }
 }
