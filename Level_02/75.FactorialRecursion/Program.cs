@@ -1,0 +1,17 @@
+﻿using System;
+
+class Program
+{
+    static int Fact(int n)
+    {
+        if(n == 0)
+            return 1;
+
+        return n * Fact(n-1);
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Factorial = " + Fact(5));
+    }
+}
