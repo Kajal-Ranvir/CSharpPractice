@@ -1,26 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class Book
+class Product
 {
     public int Id { get; set; }
-    public string Title { get; set; }
+    public string Name { get; set; }
+    public int Quantity { get; set; }
+
+    public void AddStock(int qty)
+    {
+        Quantity += qty;
+    }
+
+    public void ReduceStock(int qty)
+    {
+        if (qty <= Quantity)
+            Quantity -= qty;
+        else
+            Console.WriteLine("Not enough stock!");
+    }
 }
 
 class Program
 {
-    static List<Book> books = new List<Book>();
+    static List<Product> products = new List<Product>();
     static int idCounter = 1;
 
     static void Main()
     {
         while (true)
         {
-            Console.WriteLine("\n--- Library Management System ---");
-            Console.WriteLine("1. Add Book");
-            Console.WriteLine("2. View Books");
-            Console.WriteLine("3. Delete Book");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("\n--- Inventory Management System ---");
+            Console.WriteLine("1. Add Product");
+            Console.WriteLine("2. View Products");
+            Console.WriteLine("3. Add Stock");
+            Console.WriteLine("4. Reduce Stock");
+            Console.WriteLine("5. Exit");
             Console.Write("Enter choice: ");
 
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -28,18 +43,22 @@ class Program
             switch (choice)
             {
                 case 1:
-                    AddBook();
+                    AddProduct();
                     break;
 
                 case 2:
-                    ViewBooks();
+                    ViewProducts();
                     break;
 
                 case 3:
-                    DeleteBook();
+                    AddStock();
                     break;
 
                 case 4:
+                    ReduceStock();
+                    break;
+
+                case 5:
                     return;
 
                 default:
@@ -49,41 +68,72 @@ class Program
         }
     }
 
-    static void AddBook()
+    static void AddProduct()
     {
-        Console.Write("Enter Book Title: ");
-        string title = Console.ReadLine();
+        Console.Write("Enter Product Name: ");
+        string name = Console.ReadLine();
 
-        books.Add(new Book { Id = idCounter++, Title = title });
+        Console.Write("Enter Initial Quantity: ");
+        int qty = Convert.ToInt32(Console.ReadLine());
 
-        Console.WriteLine("Book Added!");
+        products.Add(new Product
+        {
+            Id = idCounter++,
+            Name = name,
+            Quantity = qty
+        });
+
+        Console.WriteLine("Product Added!");
     }
 
-    static void ViewBooks()
+    static void ViewProducts()
     {
-        Console.WriteLine("\n--- Book List ---");
+        Console.WriteLine("\n--- Product List ---");
 
-        foreach (var b in books)
+        foreach (var p in products)
         {
-            Console.WriteLine($"ID: {b.Id}, Title: {b.Title}");
+            Console.WriteLine($"ID: {p.Id}, Name: {p.Name}, Quantity: {p.Quantity}");
         }
     }
 
-    static void DeleteBook()
+    static void AddStock()
     {
-        Console.Write("Enter Book ID to delete: ");
+        Console.Write("Enter Product ID: ");
         int id = Convert.ToInt32(Console.ReadLine());
 
-        var book = books.Find(b => b.Id == id);
+        var product = products.Find(p => p.Id == id);
 
-        if (book != null)
+        if (product != null)
         {
-            books.Remove(book);
-            Console.WriteLine("Book Deleted!");
+            Console.Write("Enter Quantity to Add: ");
+            int qty = Convert.ToInt32(Console.ReadLine());
+
+            product.AddStock(qty);
+            Console.WriteLine("Stock Updated!");
         }
         else
         {
-            Console.WriteLine("Book not found!");
+            Console.WriteLine("Product not found!");
+        }
+    }
+
+    static void ReduceStock()
+    {
+        Console.Write("Enter Product ID: ");
+        int id = Convert.ToInt32(Console.ReadLine());
+
+        var product = products.Find(p => p.Id == id);
+
+        if (product != null)
+        {
+            Console.Write("Enter Quantity to Reduce: ");
+            int qty = Convert.ToInt32(Console.ReadLine());
+
+            product.ReduceStock(qty);
+        }
+        else
+        {
+            Console.WriteLine("Product not found!");
         }
     }
 }
